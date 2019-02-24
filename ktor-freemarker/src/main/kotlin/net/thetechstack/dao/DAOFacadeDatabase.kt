@@ -19,16 +19,6 @@ class DAOFacadeDatabase(val db: Database): DAOFacade{
     override fun init() =
         transaction(db) {
             SchemaUtils.create(Employees)
-            val employees = listOf(Employee(1, "Owlette","owlette@techstack.net", "New York"),
-                    Employee(2, "Catboy","catboy@techstack.net", "New York"),
-                    Employee(3, "Grekko","grekko@techstack.net", "New York"))
-            Employees.batchInsert(employees){ employee ->
-                this[Employees.id] = employee.id
-                this[Employees.name] = employee.name
-                this[Employees.email] = employee.email
-                this[Employees.city] = employee.city
-            }
-            Unit
         }
 
     override fun createEmployee(name: String, email: String, city: String) =
