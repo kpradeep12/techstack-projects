@@ -30,9 +30,6 @@ fun main() {
             templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
         }
         routing {
-            static("/static") {
-                resources("static")
-            }
             route("/"){
                 get{
                     call.respond(FreeMarkerContent("index.ftl", mapOf("employees" to dao.getAllEmployees())))
