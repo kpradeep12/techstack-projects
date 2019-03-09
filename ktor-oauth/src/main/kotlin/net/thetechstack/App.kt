@@ -41,8 +41,8 @@ fun main() {
                             authorizeUrl = "https://api.twitter.com/oauth/authorize",
                             accessTokenUrl = "https://api.twitter.com/oauth/access_token",
 
-                            consumerKey = "rydpe5eCuBjkHLDDqvdzY2psr",
-                            consumerSecret = "KeBHtKqTquhwZJgGBiZRfO2kA1MmTpav7ZEQ7gwBfO9NDpbPD1"
+                            consumerKey = "**",
+                            consumerSecret = "**"
                     )
                 }
                 urlProvider = { p ->
