@@ -9,4 +9,5 @@ pluginManagement {
 }
 include 'kotlin-scripts'
 include 'kotlin-scrips'
+include 'kotlin-dsl'
 

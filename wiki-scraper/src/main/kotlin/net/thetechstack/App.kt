@@ -4,9 +4,10 @@
 package net.thetechstack
 
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
-class Movie() {
+class Movie {
     var title: String? = ""
     var directedBy: String = ""
     var producedBy: String = ""
@@ -25,36 +26,31 @@ class Movie() {
 val wiki = "https://en.wikipedia.org"
 
 fun main() {
-    val movies = mutableListOf<String>()
-    //val doc = Jsoup.connect("$wiki/wiki/List_of_films_with_a_100%25_rating_on_Rotten_Tomatoes").get()
-    //val movies = doc.select(".wikitable:first-of-type tr td:first-of-type a")
-      //      .map { col -> col.attr("href") }
-        //    .toList()
+    val startTime = System.currentTimeMillis()
+    val doc = Jsoup.connect("$wiki/wiki/List_of_films_with_a_100%25_rating_on_Rotten_Tomatoes").get()
+    doc.select(".wikitable:first-of-type tr td:first-of-type a")
+            .map { col -> col.attr("href") }
+            .parallelStream()
+            .map { extractMovieData(it) }
+            .filter { it != null }
+            .forEach { println(it) }
 
     //movies.add(Movie("/wiki/The_Cabinet_of_Dr._Caligari","The Cabinet of Dr. Caligari"))
-    movies.add("/wiki/The_Kid_(1921_film)")
-    /*movies.add(Movie("/wiki/Nanook_of_the_North","Nanook of the North"))
-    movies.add(Movie("/wiki/Greed_(film)","Greed"))
-    movies.add(Movie("/wiki/The_Last_Laugh_(1924_film)","The Last Laugh"))
-    movies.add(Movie("/wiki/Battleship_Potemkin","Battleship Potemkin"))
-    movies.add(Movie("/wiki/The_Gold_Rush","The Gold Rush"))
-    movies.add(Movie("/wiki/Steamboat_Bill,_Jr.","Steamboat Bill, Jr."))
-    movies.add(Movie("/wiki/Un_Chien_Andalou","Un Chien Andalou"))
-    movies.add(Movie("/wiki/All_Quiet_on_the_Western_Front_(1930_film)","All Quiet on the Western Front"))
-*/
-    val startTime = System.currentTimeMillis()
-    //movies.forEach { println(it) }
-    movies.stream()
-            .map { extractMovieData(it) }
-            .forEach { println(it) }
+    //movies.add("/wiki/The_Kid_(1921_film)")
 
     println("${(System.currentTimeMillis() - startTime) / 1000} seconds")
 }
 
-fun extractMovieData(url: String): Movie {
+fun extractMovieData(url: String): Movie? {
+    val doc: Document
+    try {
+        doc = Jsoup.connect("$wiki$url").get()
+    }catch (e: Exception){
+        return null
+    }
+
     val movie = Movie()
-    Jsoup.connect("$wiki$url").get()
-            .select(".infobox tr")
+    doc.select(".infobox tr")
             .forEach { ele ->
                 when {
                     ele.getElementsByTag("th")?.hasClass("summary") ?: false -> {
@@ -75,7 +71,7 @@ fun extractMovieData(url: String): Movie {
                             "Music by" -> movie.musicBy = value ?: ""
                             "Release date" -> movie.releaseDate = value ?: ""
                             "poster URL" -> movie.posterURL = value ?: ""
-                            "title" -> movie.title = value ?:""
+                            "title" -> movie.title = value ?: ""
                         }
                     }
                 }
