@@ -15,10 +15,10 @@ class Movie {
     var starring: String = ""
     var musicBy: String = ""
     var releaseDate: String = ""
-    var posterURL: String = ""
+    //var posterURL: String = ""
 
     override fun toString(): String {
-        return "Movie(title='$title',\n directedBy='$directedBy', producedBy='$producedBy',\n writtenBy='$writtenBy', starring='$starring',\n musicBy='$musicBy', releaseDate='$releaseDate,\n , posterURL='$posterURL')"
+        return "Movie(title='$title')"
     }
 
 }
@@ -34,9 +34,6 @@ fun main() {
             .map { extractMovieData(it) }
             .filter { it != null }
             .forEach { println(it) }
-
-    //movies.add(Movie("/wiki/The_Cabinet_of_Dr._Caligari","The Cabinet of Dr. Caligari"))
-    //movies.add("/wiki/The_Kid_(1921_film)")
 
     println("${(System.currentTimeMillis() - startTime) / 1000} seconds")
 }
@@ -56,13 +53,14 @@ fun extractMovieData(url: String): Movie? {
                     ele.getElementsByTag("th")?.hasClass("summary") ?: false -> {
                         movie.title = ele.getElementsByTag("th")?.text()
                     }
-                    ele.getElementsByTag("img").isNotEmpty() -> {
+                    /*ele.getElementsByTag("img").isNotEmpty() -> {
                         movie.posterURL = "https:" + ele.getElementsByTag("img").attr("src")
-                    }
+                    }*/
                     else -> {
                         val value: String? = if (ele.getElementsByTag("li").size > 1)
                             ele.getElementsByTag("li").map(Element::text).filter(String::isNotEmpty).joinToString(", ") else
                             ele.getElementsByTag("td")?.first()?.text()
+
                         when (ele.getElementsByTag("th")?.first()?.text()) {
                             "Directed by" -> movie.directedBy = value ?: ""
                             "Produced by" -> movie.producedBy = value ?: ""
@@ -70,7 +68,7 @@ fun extractMovieData(url: String): Movie? {
                             "Starring" -> movie.starring = value ?: ""
                             "Music by" -> movie.musicBy = value ?: ""
                             "Release date" -> movie.releaseDate = value ?: ""
-                            "poster URL" -> movie.posterURL = value ?: ""
+                            //"poster URL" -> movie.posterURL = value ?: ""
                             "title" -> movie.title = value ?: ""
                         }
                     }
