@@ -10,4 +10,5 @@ pluginManagement {
 include 'kotlin-scripts'
 include 'kotlin-scrips'
 include 'kotlin-dsl'
+include 'twitter-stream'
 
