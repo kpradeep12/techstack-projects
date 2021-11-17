@@ -13,9 +13,9 @@ public class App {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
                 .setOAuthConsumerKey("sFCQF5Nssrh7ukLnhRuiS45Hx")
-                .setOAuthConsumerSecret("MHXtyoOGSmMDEJ4HGtRS9JhAo4ilrhiTvPOFUfiEsc9vxqM9of")
+                .setOAuthConsumerSecret("") //provide OAuth consumer secret
                 .setOAuthAccessToken("1036728000010760195-aEQPF0dqflVqSmBI3tu6llgDIry0tq")
-                .setOAuthAccessTokenSecret("FaAzjrWQTCexQ1G6nG8SkYryKPLq7bQ8MylYw3qiTl9eW");
+                .setOAuthAccessTokenSecret(""); //provide OAuth Access token secret
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
         List<Status> statuses = twitter.getHomeTimeline();
